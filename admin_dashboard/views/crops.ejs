@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crops - Admin Dashboard</title>
+
+    <!-- Global Dashboard Styles -->
+    <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+
+<!-- Overlay for mobile sidebar -->
+<div class="overlay" id="overlay"></div>
+
+<!-- Header -->
+<%- include('partials/header') %>
+
+<div class="container">
+    <!-- Sidebar -->
+    <%- include('partials/sidebar') %>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1>All Crops</h1>
+            <p>Total: <%= crops.length %> crops</p>
+        </div>
+
+        <!-- Crops Table -->
+        <div class="section">
+            <div class="table-container">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Crop Name</th>
+                        <th>Type</th>
+                        <th>Farmer</th>
+                        <th>Village</th>
+                        <th>Area (acres)</th>
+                        <th>Season</th>
+                        <th>Sowing Date</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <% crops.forEach((crop, index) => { %>
+                        <tr>
+                            <td><%= index + 1 %></td>
+
+                            <td>
+                                <strong>🌱 <%= crop.cropName %></strong>
+                            </td>
+
+                            <td><%= crop.cropType %></td>
+
+                            <td>
+                                <% if (farmerMap[crop.farmerId]) { %>
+                                    <%= farmerMap[crop.farmerId].name %>
+                                <% } else { %>
+                                    <span class="text-muted">Unknown</span>
+                                <% } %>
+                            </td>
+
+                            <td>
+                                <% if (farmerMap[crop.farmerId]) { %>
+                                    <%= farmerMap[crop.farmerId].village %>
+                                <% } else { %>
+                                    <span class="text-muted">-</span>
+                                <% } %>
+                            </td>
+
+                            <td><%= crop.area %></td>
+
+                            <td>
+                    <span class="badge badge-info">
+                      <%= crop.season %>
+                    </span>
+                            </td>
+
+                            <td>
+                                <%= new Date(crop.sowingDate).toLocaleDateString() %>
+                            </td>
+
+                            <td>
+                    <span class="badge <%= crop.syncStatus === 'SYNCED' ? 'badge-success' : 'badge-warning' %>">
+                      <%= crop.syncStatus %>
+                    </span>
+                            </td>
+                        </tr>
+                    <% }); %>
+
+                    <% if (crops.length === 0) { %>
+                        <tr>
+                            <td colspan="9" class="empty-state">
+                                No crops added yet
+                            </td>
+                        </tr>
+                    <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Global Dashboard JS (dark mode + sidebar + active nav) -->
+<script src="/js/dashboard.js"></script>
+</body>
+</html>
