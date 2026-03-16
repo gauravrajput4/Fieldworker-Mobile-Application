@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+
+<div class="overlay" id="overlay"></div>
+
+<%- include('partials/header') %>
+
+<div class="container">
+    <%- include('partials/sidebar') %>
+
+    <main class="main-content">
+        <div class="page-header">
+            <h1>Dashboard Overview</h1>
+            <p>Welcome back, <%= user.name %>!</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card blue"><h3><%= stats.totalUsers %></h3><p>Users</p></div>
+            <div class="stat-card green"><h3><%= stats.totalFarmers %></h3><p>Farmers</p></div>
+            <div class="stat-card orange"><h3><%= stats.totalCrops %></h3><p>Crops</p></div>
+            <div class="stat-card purple"><h3><%= stats.syncedFarmers %></h3><p>Synced</p></div>
+        </div>
+
+        <!-- Chart -->
+        <div class="section">
+            <h2>Analytics Overview</h2>
+            <canvas id="dashboardChart" height="120"></canvas>
+        </div>
+    </main>
+</div>
+
+<script>
+    window.STATS = {
+        totalUsers: <%= stats.totalUsers %>,
+        totalFarmers: <%= stats.totalFarmers %>,
+        totalCrops: <%= stats.totalCrops %>,
+        syncedFarmers: <%= stats.syncedFarmers %>
+    };
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/js/dashboard.js"></script>
+</body>
+</html>

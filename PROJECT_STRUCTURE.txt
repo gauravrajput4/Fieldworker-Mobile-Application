@@ -1,0 +1,163 @@
+FarmerCropApp/
+│
+├── backend/                          # Node.js Backend
+│   ├── src/
+│   │   ├── config/
+│   │   │   ├── db.js                # MongoDB connection
+│   │   │   ├── env.js               # Environment variables
+│   │   │   └── logger.js            # Winston logger
+│   │   │
+│   │   ├── modules/
+│   │   │   ├── auth/
+│   │   │   │   ├── auth.model.js    # User schema
+│   │   │   │   ├── auth.controller.js
+│   │   │   │   ├── auth.service.js  # JWT logic
+│   │   │   │   └── auth.routes.js
+│   │   │   │
+│   │   │   ├── farmer/
+│   │   │   │   ├── farmer.model.js  # Farmer schema
+│   │   │   │   ├── farmer.controller.js
+│   │   │   │   ├── farmer.service.js
+│   │   │   │   └── farmer.routes.js
+│   │   │   │
+│   │   │   └── sync/
+│   │   │       ├── sync.model.js    # Sync metadata schema
+│   │   │       ├── sync.controller.js
+│   │   │       ├── sync.service.js  # Sync logic
+│   │   │       └── sync.routes.js
+│   │   │
+│   │   ├── middlewares/
+│   │   │   ├── auth.middleware.js   # JWT verification
+│   │   │   ├── error.middleware.js  # Error handler
+│   │   │   └── rateLimiter.js       # Rate limiting
+│   │   │
+│   │   ├── utils/
+│   │   │   ├── response.js          # Response helpers
+│   │   │   └── validator.js         # Input validation
+│   │   │
+│   │   └── app.js                   # Express app setup
+│   │
+│   ├── server.js                    # Entry point
+│   ├── package.json
+│   ├── .env.example
+│   └── .gitignore
+│
+├── frontend_flutter/                # Flutter Frontend
+│   ├── lib/
+│   │   ├── bootstrap/
+│   │   │   └── app_bootstrap.dart   # App initialization
+│   │   │
+│   │   ├── core/
+│   │   │   ├── config/
+│   │   │   │   └── app_config.dart  # App constants
+│   │   │   │
+│   │   │   ├── errors/
+│   │   │   │   └── app_exceptions.dart
+│   │   │   │
+│   │   │   ├── network/
+│   │   │   │   ├── network_info.dart    # Connectivity check
+│   │   │   │   └── dio_client.dart      # HTTP client
+│   │   │   │
+│   │   │   └── logging/
+│   │   │       └── app_logger.dart
+│   │   │
+│   │   ├── features/
+│   │   │   ├── auth/
+│   │   │   │   ├── data/            # Auth repository
+│   │   │   │   ├── domain/          # Auth models
+│   │   │   │   └── presentation/    # Login/Register UI
+│   │   │   │
+│   │   │   ├── farmer/
+│   │   │   │   ├── data/
+│   │   │   │   │   └── local_database.dart  # SQLite
+│   │   │   │   ├── domain/
+│   │   │   │   │   └── farmer_model.dart
+│   │   │   │   └── presentation/    # Farmer UI
+│   │   │   │
+│   │   │   └── sync/
+│   │   │       ├── background_sync.dart     # WorkManager
+│   │   │       └── conflict_resolver.dart   # Conflict handling
+│   │   │
+│   │   ├── shared/
+│   │   │   ├── widgets/             # Reusable widgets
+│   │   │   └── services/            # Shared services
+│   │   │
+│   │   └── main.dart                # Entry point
+│   │
+│   └── pubspec.yaml                 # Dependencies
+│
+├── README.md                        # Full documentation
+├── QUICKSTART.md                    # Quick setup guide
+└── PROJECT_STRUCTURE.txt            # This file
+
+---
+
+## 🔑 Key Components
+
+### Backend
+- **Express.js**: REST API framework
+- **MongoDB Atlas**: Cloud database
+- **JWT**: Secure authentication
+- **Winston**: Logging
+- **Rate Limiter**: API protection
+
+### Frontend
+- **Flutter**: Cross-platform mobile framework
+- **SQLite**: Local offline database
+- **Dio**: HTTP client for API calls
+- **WorkManager**: Background sync tasks
+- **Connectivity Plus**: Network detection
+
+---
+
+## 🔄 Data Flow
+
+1. User creates farmer data (offline)
+2. Data saved to SQLite with syncStatus='PENDING'
+3. Background task checks internet every 15 min
+4. If online, sends pending data to server
+5. Server validates and saves to MongoDB
+6. Server sends back updated data
+7. App updates local database with syncStatus='SYNCED'
+8. Conflicts resolved using strategy (LATEST_WINS)
+
+---
+
+## 🚀 Quick Commands
+
+### Backend
+```bash
+cd backend
+npm install
+npm run dev
+```
+
+### Frontend
+```bash
+cd frontend_flutter
+flutter pub get
+flutter run
+```
+
+---
+
+## 📊 Database Collections
+
+1. **users** - Fieldworker accounts
+2. **farmers** - Farmer records
+3. **syncmetadata** - Sync history and status
+
+---
+
+## 🎯 Production Ready Features
+
+✅ Offline-first architecture
+✅ Background synchronization
+✅ Conflict resolution
+✅ JWT authentication
+✅ Rate limiting
+✅ Error handling
+✅ Logging
+✅ Input validation
+✅ Scalable structure
+✅ Clean architecture

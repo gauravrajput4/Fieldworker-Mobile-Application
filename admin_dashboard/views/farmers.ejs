@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmers - Admin Dashboard</title>
+
+    <!-- Global Dashboard Styles -->
+    <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+
+<!-- Overlay for mobile sidebar -->
+<div class="overlay" id="overlay"></div>
+
+<!-- Header -->
+<%- include('partials/header') %>
+
+<div class="container">
+    <!-- Sidebar -->
+    <%- include('partials/sidebar') %>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1>All Farmers</h1>
+            <p>Total: <%= farmers.length %> farmers</p>
+        </div>
+
+        <!-- Farmers Table -->
+        <div class="section">
+            <div class="table-container">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Village</th>
+                        <th>Mobile</th>
+                        <th>Address</th>
+                        <th>GPS Location</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <% farmers.forEach((farmer, index) => { %>
+                        <tr>
+                            <td><%= index + 1 %></td>
+
+                            <td>
+                                <strong><%= farmer.name %></strong>
+                            </td>
+
+                            <td><%= farmer.village %></td>
+
+                            <td><%= farmer.mobile %></td>
+
+                            <td><%= farmer.address || 'N/A' %></td>
+
+                            <td>
+                                <% if (farmer.latitude && farmer.longitude) { %>
+                                    📍 <%= farmer.latitude.toFixed(4) %>,
+                                    <%= farmer.longitude.toFixed(4) %>
+                                <% } else { %>
+                                    <span class="text-muted">No location</span>
+                                <% } %>
+                            </td>
+
+                            <td>
+                    <span class="badge <%= farmer.syncStatus === 'SYNCED' ? 'badge-success' : 'badge-warning' %>">
+                      <%= farmer.syncStatus %>
+                    </span>
+                            </td>
+
+                            <td>
+                                <%= new Date(farmer.createdAt).toLocaleDateString() %>
+                            </td>
+                        </tr>
+                    <% }); %>
+
+                    <% if (farmers.length === 0) { %>
+                        <tr>
+                            <td colspan="8" class="empty-state">
+                                No farmers registered yet
+                            </td>
+                        </tr>
+                    <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Global Dashboard JS (dark mode + sidebar + active nav) -->
+<script src="/js/dashboard.js"></script>
+</body>
+</html>
